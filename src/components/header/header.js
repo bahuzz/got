@@ -8,10 +8,11 @@ const HeaderBlock = styled.div`
     height: 80px;
 `;
 
-const HeaderTitle = styled.h3`
-    font-size: 24px;
-    color: #fff;
+const HeaderTitle = styled.h1`
+    font-size: 36px;
+    color: #fff181;
     margin: 0;
+    text-shadow: 0 0 5px #000;
 `;
 
 const HeaderLinks = styled.ul`
