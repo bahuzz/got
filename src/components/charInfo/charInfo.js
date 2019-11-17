@@ -9,24 +9,26 @@ const ListItemStyle = styled(ListGroupItem)`
     border-right: none !important;
 `;
 
-const CharInfo = () => {
+const CharInfo = (props) => {
+    const {gender, born, died, culture} = props;
+
     return (
         <ListGroup>
             <ListItemStyle>
                 <b>Gender</b>
-                <span>male</span>
+                <span>{gender}</span>
             </ListItemStyle>
             <ListItemStyle>
                 <b>Born</b>
-                <span>1783</span>
+                <span>{born}</span>
             </ListItemStyle>
             <ListItemStyle>
                 <b>Died</b>
-                <span>1820</span>
+                <span>{died}</span>
             </ListItemStyle>
             <ListItemStyle>
                 <b>Culture</b>
-                <span>First</span>
+                <span>{culture}</span>
             </ListItemStyle>
         </ListGroup>
     )

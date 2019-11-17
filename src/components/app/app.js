@@ -11,29 +11,36 @@ export default class App extends Component {
     constructor() {
         super();
         this.got = new GotService();
+        this.state = {
+            randomHide: false
+        }
     }
 
-    componentDidMount() {
-        this.serv()
-    }
-
-    serv = () => {
-        this.got.getHouses()
-            .then(res => console.log(res))
+    hideRandom = () => {
+        this.setState((prevState) => {
+            return {randomHide: !prevState.randomHide}
+        })
     }
 
     render() {
 
-    
+        const randomChar = this.state.randomHide ? null : <RandomChar />;
+
         return (
-            <> 
+            <div> 
                 <Container>
                     <Header />
                 </Container>
                 <Container>
                     <Row>
                         <Col lg={{size: 5, offset: 0}}>
-                            <RandomChar/>
+                            {randomChar}
+                        </Col>
+                        <Col>
+                            <button 
+                                className="btn btn-warning"
+                                onClick={this.hideRandom}
+                            >Boom!</button>
                         </Col>
                     </Row>
                     <Row>
@@ -45,7 +52,7 @@ export default class App extends Component {
                         </Col>
                     </Row>
                 </Container>
-            </>
+            </div>
         );
     }
 }
