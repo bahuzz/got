@@ -10,8 +10,11 @@ const ListItemStyle = styled(ListGroupItem)`
 `;
 
 const CharInfo = (props) => {
-    const {gender, born, died, culture} = props;
-
+    let {gender, born, died, culture} = props;
+    gender = gender ? gender : 'unknown';
+    born = born ? born : 'unknown';
+    died = died ? died : 'unknown';
+    culture = culture ? culture : 'unknown';
     return (
         <ListGroup>
             <ListItemStyle>
