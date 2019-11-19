@@ -2,9 +2,9 @@ import React,{Component} from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header/header';
 import RandomChar from '../randomChar/randomChar';
-import ItemList from '../itemList/itemList';
-import CharDetails from '../charDetails/charDetails';
 import GotService from '../../services/gotService';
+import ErrorMessage from '../../components/errorMessage/errorMessage';
+import CharacterPage from '../../components/characterPage/characterPage'
 
 
 export default class App extends Component {
@@ -12,8 +12,16 @@ export default class App extends Component {
         super();
         this.got = new GotService();
         this.state = {
-            randomHide: false
+            randomHide: false,
+            error: false
         }
+    }
+
+    componentDidCatch() {
+        console.log('error');
+        this.setState({
+            error: true
+        })
     }
 
     hideRandom = () => {
@@ -25,6 +33,10 @@ export default class App extends Component {
     render() {
 
         const randomChar = this.state.randomHide ? null : <RandomChar />;
+
+        if (this.state.error) {
+            return <ErrorMessage/>
+        }
 
         return (
             <div> 
@@ -43,14 +55,7 @@ export default class App extends Component {
                             >Boom!</button>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList />
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails />
-                        </Col>
-                    </Row>
+                    <CharacterPage/>
                 </Container>
             </div>
         );

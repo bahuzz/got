@@ -5,6 +5,7 @@ const ErrorMessage = () => {
     return (
         <>  
             <img src={img} alt='error'></img>
+            <br></br>
             <span>Something goes wrong</span>
         </>
             )

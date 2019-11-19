@@ -14,8 +14,8 @@ export default class GotService {
     }
 
     async getAllCharacters() {
-        const characters = await this.getResource(`characters`);
-        return this._transformCharacter(characters);
+        const characters = await this.getResource(`characters?page=23&pageSize=10`);
+        return characters.map(this._transformCharacter);
     }
 
     async getCharacter(id) {
@@ -32,7 +32,10 @@ export default class GotService {
     }
 
     _transformCharacter(char) {
+        let arr = char.url.split('/');
+        let [id] = arr.splice(-1);
         return {
+            id,
             name: char.name,
             gender: char.gender,
             born: char.born,

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CharInfo from '../charInfo/charInfo';
-import gotService from '../../services/gotService'
+import gotService from '../../services/gotService';
 import styled from 'styled-components';
 import Spinner from '../spinner/spinner'
 import ErrorMessage from '../errorMessage/errorMessage'
@@ -15,16 +15,21 @@ const RandomBlock = styled.div`
     }
 `;
 export default class RandomChar extends Component {
-    constructor() {
-        super();
-        this.updateChar();
-    }
 
     gotService = new gotService();
     state = {
         char: {},
         loading: true,
         error: false
+    }
+
+    componentDidMount() {
+        this.updateChar();
+        this.timerId = setInterval(this.updateChar, 4000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
     }
 
     onCharLoaded = (char) => {
@@ -41,7 +46,7 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar() {
+    updateChar = () => {
         const id = Math.floor(Math.random()*270 + 23);
         // const id = 12345689;
         this.gotService.getCharacter(id)
