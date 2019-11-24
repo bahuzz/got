@@ -7,7 +7,10 @@ import ErrorMessage from '../errorMessage/errorMessage';
 import CharacterPage from '../pages/characterPage/characterPage';
 import BooksPage from '../pages/booksPage/booksPage';
 import HousesPage from '../pages/housesPage/housesPage';
-
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import BooksItem from '../pages/booksItem/booksItem';
+import HomePage from '../pages/homePage/homePage';
+import './app.scss';
 
 export default class App extends Component {
     constructor() {
@@ -41,7 +44,8 @@ export default class App extends Component {
         }
 
         return (
-            <div> 
+            <Router>
+            <div className="app"> 
                 <Container>
                     <Header />
                 </Container>
@@ -57,11 +61,19 @@ export default class App extends Component {
                             >Boom!</button>
                         </Col>
                     </Row>
-                    <CharacterPage/>
-                    <BooksPage/>
-                    <HousesPage/>
+                    <Route path='/' exact component={HomePage}/>
+                    <Route path='/characters' component={CharacterPage}/>
+                    <Route path='/houses' component={HousesPage}/>
+                    <Route path='/books' exact component={BooksPage}/>
+                    <Route path='/books/:id'  render={
+                        ({match}) => {
+                            const {id} = match.params;
+                            return <BooksItem bookId={id}/>
+                            }
+                        }/>
                 </Container>
             </div>
+            </Router>
         );
     }
 }

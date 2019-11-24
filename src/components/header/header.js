@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import {Link} from 'react-router-dom';
+ 
 const HeaderBlock = styled.div`
     display: flex;
     justify-content: space-between;
@@ -31,19 +32,19 @@ const Header = () => {
     return (
         <HeaderBlock>
             <HeaderTitle>
-                <a href="#1">
-                Game of Thrones DB
-                </a>
+                <Link to='/'>
+                    Game of Thrones DB
+                </Link>
             </HeaderTitle>
             <HeaderLinks>
                 <li>
-                    <a href="#1">Characters</a>
+                    <Link to='/characters'>Characters</Link>
                 </li>
                 <li>
-                    <a href="#1">Houses</a>
+                    <Link to='/houses'>Houses</Link>
                 </li>
                 <li>
-                    <a href="#1">Books</a>   
+                    <Link to='/books'>Books</Link> 
                 </li>
             </HeaderLinks>
         </HeaderBlock>

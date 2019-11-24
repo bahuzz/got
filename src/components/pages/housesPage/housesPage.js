@@ -6,7 +6,7 @@ import ErrorMessage from '../../errorMessage/errorMessage';
 import gotService from '../../../services/gotService';
 
 
-export default class BooksPage extends Component {
+export default class HousesPage extends Component {
 
     gotService = new gotService();
 
