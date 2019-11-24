@@ -5,7 +5,7 @@ export default class GotService {
     }
 
     getResource = async (url) => {
-        const res = await fetch(`${this._apiBase}${url}`);
+        const res = await fetch(`${this.proxy}${this._apiBase}${url}`);
 
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}; received ${res.status}`);
@@ -13,22 +13,35 @@ export default class GotService {
         return await res.json();
     }
 
-    async getAllCharacters() {
+    getAllCharacters = async () => {
         const characters = await this.getResource(`characters?page=23&pageSize=10`);
         return characters.map(this._transformCharacter);
     }
 
-    async getCharacter(id) {
+    getCharacter = async (id) => {
         const character = await this.getResource(`characters/${id}`);
         return this._transformCharacter(character);
     }
 
-    getHouses() {
-        return this.getResource('houses');
+    getBook = async (id) => {
+        const book = await this.getResource(`books/${id}`);
+        return this._transformBook(book);
     }
 
-    getBooks() {
-        return this.getResource('books');
+    getHouse = async (id) => {
+        const house = await this.getResource(`houses/${id}`);
+        console.log(house);
+        return this._transformHouse(house);
+    }
+
+    getAllHouses = async () => {
+        const houses = await this.getResource(`houses`);
+        return houses.map(this._transformHouse);
+    }
+
+    getAllBooks = async () => {
+        const books = await this.getResource(`books`);
+        return books.map(this._transformBook);
     }
 
     _transformCharacter(char) {
@@ -41,27 +54,30 @@ export default class GotService {
             born: char.born,
             died: char.died,
             culture: char.culture 
-        }
-            
+        } 
     }
 
     _transformHouse(house) {
+        let arr = house.url.split('/');
+        let [id] = arr.splice(-1);
         return {
+            id,
             name: house.name,
             region: house.region,
             words: house.words,
-            titles: house.titles,
-            overlord: house.overlord,
-            ancestralWeapons: house.ancestralWeapons  
+            coatOfArms: house.coatOfArms
         }
             
     }
 
     _transformBook(book) {
+        let arr = book.url.split('/');
+        let [id] = arr.splice(-1);
         return {
+            id,
             name: book.name,
             numberOfPages: book.numberOfPages,
-            publiser: book.publiser,
+            publisher: book.publisher,
             released: book.released
         }
             

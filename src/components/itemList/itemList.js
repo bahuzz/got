@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {ListGroup,ListGroupItem} from 'reactstrap';
-import gotService from '../../services/gotService'
 import styled from 'styled-components';
-import Spinner from '../spinner/spinner'
+import Spinner from '../spinner/spinner';
 
 const ListItemStyle = styled(ListGroupItem)`
     cursor: pointer;
@@ -14,38 +13,42 @@ const ListGroupBg = styled(ListGroup)`
 
 export default class ItemList extends Component {
 
-    gotService = new gotService();
-
     state = {
-        charList: null
+        itemList: null
     }
 
     componentDidMount() {
-        this.gotService.getAllCharacters()
-            .then((charList) => {
+        const {getData} = this.props;
+
+        getData()
+            .then((itemList) => {
                 this.setState({
-                    charList
+                    itemList
                 })
             })
     }
 
     renderItems(arr) {
         return arr.map((item) => {
+            const {id} = item;
+
+            const label = this.props.renderItem(item);
+
             return (
                 <ListItemStyle 
-                    key={item.id}
-                    onClick={() => this.props.onCharSelected(item.id)}
+                    key={id}
+                    onClick={() => this.props.onItemSelected(id)}
                 >
-                    {item.name}
+                    {label}
                 </ListItemStyle>
             )
         })
     }
 
     render() {
-        const {charList} = this.state;
+        const {itemList} = this.state;
 
-        const content = charList ? this.renderItems(charList) : <Spinner/>;
+        const content = itemList ? this.renderItems(itemList) : <Spinner/>;
 
         return (
             <ListGroupBg>

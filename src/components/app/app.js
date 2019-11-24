@@ -3,14 +3,16 @@ import {Col, Row, Container} from 'reactstrap';
 import Header from '../header/header';
 import RandomChar from '../randomChar/randomChar';
 import GotService from '../../services/gotService';
-import ErrorMessage from '../../components/errorMessage/errorMessage';
-import CharacterPage from '../../components/characterPage/characterPage'
+import ErrorMessage from '../errorMessage/errorMessage';
+import CharacterPage from '../pages/characterPage/characterPage';
+import BooksPage from '../pages/booksPage/booksPage';
+import HousesPage from '../pages/housesPage/housesPage';
 
 
 export default class App extends Component {
     constructor() {
         super();
-        this.got = new GotService();
+        this.gotService = new GotService();
         this.state = {
             randomHide: false,
             error: false
@@ -56,6 +58,8 @@ export default class App extends Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
+                    <BooksPage/>
+                    <HousesPage/>
                 </Container>
             </div>
         );
