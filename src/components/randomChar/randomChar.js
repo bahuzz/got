@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState,useEffect} from 'react';
 import CharInfo from '../charInfo/charInfo';
 import gotService from '../../services/gotService';
 import styled from 'styled-components';
@@ -14,62 +14,76 @@ const RandomBlock = styled.div`
     text-align: center;
     }
 `;
-export default class RandomChar extends Component {
 
-    gotService = new gotService();
-    state = {
-        char: {},
-        loading: true,
-        error: false
+
+function RandomChar() {
+
+    const gotServ = new gotService();
+       
+    const [char,updChar] = useState({});
+    const [loading,updateLoading] = useState(true);
+    const [error,updateError] = useState(false);
+
+    // state = {
+    //     char: {},
+    //     loading: true,
+    //     error: false
+    // }
+
+    useEffect(() => {
+        updateChar();
+        const timerId = setInterval(updateChar, 4000);
+        return () => clearInterval(timerId);
+    },[]);
+
+    // componentDidMount() {
+    //     this.updateChar();
+    //     this.timerId = setInterval(this.updateChar, 4000);
+    // }
+
+    // componentWillUnmount() {
+    //     clearInterval(this.timerId);
+    // }
+
+    function onCharLoaded(char) {
+        updChar(char);
+        updateLoading(false);
+        // this.setState({
+        //     char,
+        //     loading: false
+        // })
     }
 
-    componentDidMount() {
-        this.updateChar();
-        this.timerId = setInterval(this.updateChar, 4000);
+    function onError() {
+        updateLoading(false);
+        updateError(true)
+        // this.setState({
+        //     error: true,
+        //     loading: false
+        // })
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timerId);
-    }
-
-    onCharLoaded = (char) => {
-        this.setState({
-            char,
-            loading: false
-        })
-    }
-
-    onError = (err) => {
-        this.setState({
-            error: true,
-            loading: false
-        })
-    }
-
-    updateChar = () => {
+    function updateChar() {
         const id = Math.floor(Math.random()*270 + 23);
         // const id = 12345689;
-        this.gotService.getCharacter(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+        gotServ.getCharacter(id)
+            .then(onCharLoaded)
+            .catch(onError);
     }
 
+    let content = loading ? <Spinner/> : <View char={char}/>;
     
+    if(error) content = <ErrorMessage/>;
 
-    render() {
-        const {char,loading, error} = this.state;
+    return (
+        <RandomBlock className="rounded">
+            {content}
+        </RandomBlock>
+    );
 
-        let content = loading ? <Spinner/> : <View char={char}/>;
-        
-        if(error) content = <ErrorMessage/>;
-
-        return (
-            <RandomBlock className="rounded">
-                {content}
-            </RandomBlock>
-        );
-    }
 }
+
+export default RandomChar;
 
 const View = ({char}) => {
     const {name, gender, born, died, culture} = char;

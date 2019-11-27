@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ListGroup,ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
 import Spinner from '../spinner/spinner';
@@ -11,33 +11,39 @@ const ListGroupBg = styled(ListGroup)`
     border-radius: 0.25rem !important;
 `;
 
-export default class ItemList extends Component {
+function ItemList({getData,onItemSelected,renderItem}) {
 
-    state = {
-        itemList: null
-    }
+    const [itemList, updateList] = useState([]);
+    // state = {
+    //     itemList: null
+    // }
 
-    componentDidMount() {
-        const {getData} = this.props;
-
+    useEffect(() => {
         getData()
-            .then((itemList) => {
-                this.setState({
-                    itemList
-                })
+            .then((data) => {
+                updateList(data)
             })
-    }
+    }, [])
 
-    renderItems(arr) {
+    // componentDidMount() {
+    //     getData()
+    //         .then((itemList) => {
+    //             this.setState({
+    //                 itemList
+    //             })
+    //         })
+    // }
+
+    function renderItems(arr) {
         return arr.map((item) => {
             const {id} = item;
 
-            const label = this.props.renderItem(item);
+            const label = renderItem(item);
 
             return (
                 <ListItemStyle 
                     key={id}
-                    onClick={() => this.props.onItemSelected(id)}
+                    onClick={() => onItemSelected(id)}
                 >
                     {label}
                 </ListItemStyle>
@@ -45,15 +51,13 @@ export default class ItemList extends Component {
         })
     }
 
-    render() {
-        const {itemList} = this.state;
+    const content = itemList ? renderItems(itemList) : <Spinner/>;
 
-        const content = itemList ? this.renderItems(itemList) : <Spinner/>;
-
-        return (
-            <ListGroupBg>
-                {content}
-            </ListGroupBg>
+    return (
+        <ListGroupBg>
+            {content}
+        </ListGroupBg>
         );
-    }
 }
+
+export default ItemList;
