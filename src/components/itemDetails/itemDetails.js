@@ -23,10 +23,11 @@ const ListItemStyle = styled(ListGroupItem)`
 `;
 
 const Field = ({item,field,label}) => {
+    const fieldItem = (item[field]) ? item[field] : 'unknown';
     return (
         <ListItemStyle>
             <b>{label}</b>
-            <span>{item[field]}</span>
+            <span>{fieldItem}</span>
         </ListItemStyle>
     )
 }
